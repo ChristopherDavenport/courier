@@ -33,7 +33,7 @@ import courier._, Defaults._
 val mailer = Mailer("smtp.gmail.com", 587)
                .auth(true)
                .as("you@gmail.com", "p@$$w3rd")
-               .startTtls(true)()
+               .startTls(true)()
                      
 mailer(Envelope.from("you" `@` "gmail.com")
         .to("mom" `@` "gmail.com")
@@ -86,7 +86,9 @@ class MailSpec extends Specification with NoTimeConversions {
           val momsMsg = momsInbox.get(0)
           momsMsg.getContent === "hi mom"
           momsMsg.getSubject === "miss you"
-        }       	  	}  }
+        }       	
+  	}
+  }
 }        
 ```
 

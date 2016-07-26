@@ -1,3 +1,4 @@
+
 organization := "me.lessis"
 
 name := "courier"
@@ -7,8 +8,7 @@ version := "0.1.4-SNAPSHOT"
 description := "deliver electronic mail with scala"
 
 libraryDependencies ++= Seq(
-  "javax.mail"        % "mail"        % "1.4.7",
-  "javax.activation"  % "activation"  % "1.1.1"
+  "com.sun.mail" % "javax.mail" % "1.5.5"
 )
 
 licenses := Seq(
@@ -16,19 +16,29 @@ licenses := Seq(
 
 homepage := Some(url(s"https://github.com/softprops/${name.value}/#readme"))
 
-crossScalaVersions := Seq("2.10.4", "2.11.1")
+scalaVersion := "2.11.8"
+crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.0-M5")
 
-scalaVersion := crossScalaVersions.value.last
 
-seq(bintraySettings:_*)
 
-bintray.Keys.packageLabels in bintray.Keys.bintray := Seq("email", "mail", "javamail")
+val cmdlineProfile = sys.props.getOrElse("sbt.profile", default = "")
 
-seq(lsSettings:_*)
+def profile: Project ⇒ Project = p => cmdlineProfile match {
+  case "2.12.x" => p.disablePlugins(scoverage.ScoverageSbtPlugin)
+  case _ => p
+}
 
-LsKeys.tags in LsKeys.lsync := (bintray.Keys.packageLabels in bintray.Keys.bintray).value
-
-externalResolvers in LsKeys.lsync := (resolvers in bintray.Keys.bintray).value
+//scalaVersion := crossScalaVersions.value.last
+//
+//seq(bintraySettings:_*)
+//
+//bintray.Keys.packageLabels in bintray.Keys.bintray := Seq("email", "mail", "javamail")
+//
+//seq(lsSettings:_*)
+//
+//LsKeys.tags in LsKeys.lsync := (bintray.Keys.packageLabels in bintray.Keys.bintray).value
+//
+//externalResolvers in LsKeys.lsync := (resolvers in bintray.Keys.bintray).value
 
 pomExtra := (
   <scm>
